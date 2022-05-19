@@ -1,0 +1,29 @@
+\<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+
+        <link rel="stylesheet" type="text/css" href="./node_modules/leaflet/dist/leaflet.css">  <!-- Import the Leaflet Stylesheet -->
+
+    </head>
+    <body>
+        
+        <div leaflet style="height: 400px;"
+            leafletDraw
+            [leafletOptions]="options"
+            [leafletDrawOptions]="drawOptions"
+            (leafletDrawCreated)="onDrawCreated($event)">
+
+            <div [leafletLayer]="drawnItems"></div>
+
+        </div>
+        
+        <script src="" async defer></script>
+    </body>
+</html>
