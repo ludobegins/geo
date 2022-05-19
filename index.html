@@ -18,7 +18,7 @@
         <div id="map" ></div>
         
         <script>
-            var map = L.map('map').setView([51.505, -0.09], 13);
+            var map = L.map('map').setView([51.505, -0.09], 11);
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
                 maxZoom: 18,
@@ -27,6 +27,8 @@
                 zoomOffset: -1,
                 accessToken: 'pk.eyJ1IjoibHVkb2JlZ2lucyIsImEiOiJjbDNkZTVvMXUwN2gyM2NtbjlkOGljcDRyIn0.tDfHI9xk1U1ItD6_ZCOIPA'
             }).addTo(map);
+
+           /* + provedores de mapas aqui https://leaflet-extras.github.io/leaflet-providers/preview/ */
 
             var marker = L.marker([51.5, -0.09]).addTo(map);
 
@@ -43,20 +45,57 @@
                 [51.51, -0.047]
             ]).addTo(map);
 
-            marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+            marker.bindPopup("<b>Hello world!</b><br>I am a popup.");
             circle.bindPopup("I am a circle.");
             polygon.bindPopup("I am a polygon.");
 
-            var popup = L.popup()
-            .setLatLng([51.513, -0.09])
-            .setContent("I am a standalone popup.")
-            .openOn(map);
+            // Initialise the FeatureGroup to store editable layers
+            var editableLayers = new L.FeatureGroup();
+            map.addLayer(editableLayers);
 
-            function onMapClick(e) {
-                alert("You clicked the map at " + e.latlng);
+            var drawPluginOptions = {
+            position: 'topright',
+            draw: {
+                polygon: {
+                allowIntersection: false, // Restricts shapes to simple polygons
+                drawError: {
+                    color: '#e1e100', // Color the shape will turn when intersects
+                    message: '<strong>Oh snap!<strong> you can\'t draw that!' // Message that will show when intersect
+                },
+                shapeOptions: {
+                    color: '#97009c'
+                }
+                },
+                // disable toolbar item by setting it to false
+                polyline: false,
+                circle: false, // Turns off this drawing tool
+                rectangle: false,
+                marker: false,
+                },
+            edit: {
+                featureGroup: editableLayers, //REQUIRED!!
+                remove: false
+            }
+            };
+
+            var editableLayers = new L.FeatureGroup();
+            map.addLayer(editableLayers);
+            
+            // Initialise the draw control and pass it the FeatureGroup of editable layers
+            var drawControl = new L.Control.Draw(drawPluginOptions);
+            map.addControl(drawControl);
+
+
+            map.on('draw:created', function(e) {
+            var type = e.layerType,
+                layer = e.layer;
+
+            if (type === 'marker') {
+                layer.bindPopup('A popup!');
             }
 
-            map.on('click', onMapClick);
+            editableLayers.addLayer(layer);
+            });
 
         </script>
     </body>
