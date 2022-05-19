@@ -1,5 +1,12 @@
 {
   "dependencies": {
-    "leaflet": "^1.8.0"
+    "@asymmetrik/ngx-leaflet": "^13.0.2",
+    "@asymmetrik/ngx-leaflet-draw": "^13.0.3",
+    "leaflet": "^1.8.0",
+    "leaflet-draw": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.7.10",
+    "@types/leaflet-draw": "^1.0.5"
   }
 }
